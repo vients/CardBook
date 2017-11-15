@@ -10,7 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController , UIScrollViewDelegate{
     
-    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
     
@@ -20,6 +19,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         scrollView.delegate = self
         self.pageControl.numberOfPages = imageCardsArray.count
         loadImage()

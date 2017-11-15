@@ -11,7 +11,7 @@ import CoreData
 import RSBarcodes_Swift
 import AVFoundation
 
-class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
+class AddCardVC: UIViewController {
     
     @IBOutlet weak var addCardView: UIView!
     @IBOutlet weak var frontImageView: UIImageView!
@@ -37,6 +37,7 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     
     private var manager = Manager()
     var card:Card?
+    
     let buttonOnSubView = UIButton(type: UIButtonType.system)
     let codedLabel:UILabel = UILabel()
     private var imagePicked = 0
@@ -51,6 +52,7 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
                 barcodeTextField.isHidden = true
                 barcodeImageView.isHidden = true
                 self.descriptionLabelToTopConstraint.constant = 15.0
+                
             } else {
                 barcodeTextField.isHidden = false
                 barcodeImageView.isHidden = false
@@ -61,36 +63,24 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addLogoToNavigationBar(logo: logo)
         isExpanded = false
-        //        self.frontImageView.layer.cornerRadius = 15
-//        self.frontImageView.layer.borderWidth = 3.0
-//        self.frontImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
-//        self.barcodeImageView.layer.borderWidth = 3.0
-//        self.barcodeImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
-        self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
-        editCardFunc()
         generateBarcode.isHidden = true
-        
+        editCardFunc()
+        borderOnImage()
+        self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    func addLogoToNavigationBar(logo: String) {
-        let logo = UIImage(named: logo)
-        let imageView = UIImageView(image:logo)
-        self.navigationItem.titleView = imageView
-    }
-    
+  
     @IBAction func createBarCode(_ sender: Any) {
         scanBarCodeUseCamera()
-        //        generateBarcode.isHidden = false
         isExpanded = true
     }
+    
     @IBAction func buttonGenerateBarcode(_ sender: Any) {
         barcodeImageView.image = manager.generateBarCodeFromString(barcode: barcodeTextField.text!)
     }
+    
     @IBAction func addColorFilter(_ sender: UIButton) {
         colorTag = nil
         
@@ -107,18 +97,32 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     }
     
     @IBAction func save(_ sender: UIBarButtonItem) {
-        
+        saveToCoreData()
+    }
+    
+    @IBAction func addFrontImage(_ sender: UIButton) {
+        chooseImage()
+        imagePicked = sender.tag
+    }
+    
+    @IBAction func addBackCardImage(_ sender: UIButton) {
+        chooseImage()
+        imagePicked = sender.tag
+    }
+
+    private func saveToCoreData() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         if card == nil {
             let storeDescription = NSEntityDescription.entity(forEntityName: "Card", in: context)
             card = Card(entity: storeDescription!, insertInto: context)
         }
-        if nameCard.text != ""  {
+        if nameCard.text != "" && frontImageView.image != #imageLiteral(resourceName: "front") {
             card?.name = nameCard.text!
             card?.frontImage = manager.saveImagePath((frontImageView?.image)!)
             card?.backImage = manager.saveImagePath((backImageView?.image)!)
             card?.barcode = barcodeTextField.text!
+           
             if barcodeImageView.image == nil{
                 card?.barcodeImage = ""
             } else {
@@ -144,31 +148,45 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
         }
     }
     
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        textView.textContainer.maximumNumberOfLines = 5
-        textView.textContainer.lineBreakMode = .byTruncatingTail
-        let newText = (descriptionCard.text as NSString).replacingCharacters(in: range, with: text)
-        let numberOfChars = newText.count
-        
-        if(numberOfChars <= 140) {
-            self.characterLabel.text = "\(140 - numberOfChars)"
-            return true
-        } else{
-            return false
+    private func editCardFunc() {
+        if let card = card {
+            nameCard.text = card.name
+            frontImageView.image = manager.loadImageFromPath(imgName: card.frontImage)
+            backImageView.image = manager.loadImageFromPath(imgName: card.backImage)
+            barcodeTextField.text = card.barcode
+            barcodeImageView.image = manager.loadImageFromPath(imgName: card.barcodeImage)
+            descriptionCard.text = card.cardDescription
+            colorTag = Int(card.colorFilter)!
+            
+            let index = Int(card.colorFilter)!
+            colorFilterCollection[index].setOn(true, animated: true)
         }
     }
     
-    @IBAction func addFrontImage(_ sender: UIButton) {
-        chooseImage()
-        //        showCustomPicker(.photoLibrary)
-        imagePicked = sender.tag
+    private func borderOnImage(){
+        self.frontImageView.layer.borderWidth = 3.0
+        self.frontImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
+        self.barcodeImageView.layer.borderWidth = 3.0
+        self.barcodeImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
     }
     
-    @IBAction func addBackCardImage(_ sender: UIButton) {
-        chooseImage()
-        imagePicked = sender.tag
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
+    
+    func addLogoToNavigationBar(logo: String) {
+        let logo = UIImage(named: logo)
+        let imageView = UIImageView(image:logo)
+        self.navigationItem.titleView = imageView
+    }
+    @IBAction func done(_ sender: Any) {
+        performSegue(withIdentifier: "unwindToCardList", sender: self)
+    }
+
+}
+
+//MARK: ImagePicker, WDImagePicker
+extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UINavigationControllerDelegate {
     
     private func chooseImage() {
         
@@ -183,7 +201,6 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
             if UIImagePickerController.isSourceTypeAvailable(.camera){
                 imagePickerController.sourceType = .camera
                 self.showCustomPicker(.camera)
-                //                imagePickerController.allowsEditing = true
                 self.present(imagePickerController, animated: true, completion: nil)
             } else{
                 print("Camera not available")
@@ -201,51 +218,6 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
         self.present(actionSheet, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let images  = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        if imagePicked == 1 {
-            frontImageView.image = images
-        } else if imagePicked == 2 {
-            backImageView.image = images
-        }
-        
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func done(_ sender: Any) {
-        performSegue(withIdentifier: "unwindToCardList", sender: self)
-    }
-    
-    private func editCardFunc() {
-        if let card = card {
-            nameCard.text = card.name
-            frontImageView.image = manager.loadImageFromPath(imgName: card.frontImage)
-            backImageView.image = manager.loadImageFromPath(imgName: card.backImage)
-            barcodeTextField.text = card.barcode
-            barcodeImageView.image = manager.loadImageFromPath(imgName: card.barcodeImage)
-            descriptionCard.text = card.cardDescription
-            colorTag = Int(card.colorFilter)!
-            
-            let index = Int(card.colorFilter)!
-            colorFilterCollection[index].setOn(true, animated: true)
-        }
-    }
-    public func generateBarCodeFromString(string: String) -> UIImage? {
-        
-        
-        let imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(string, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue)
-        return imageBarCode
-    }
-    
-}
-
-extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UINavigationControllerDelegate {
-    
     func showCustomPicker(_ type: UIImagePickerControllerSourceType){
         self.imagePicker = WDImagePicker()
         self.imagePicker.cropSize = CGSize(width: 280, height: 280)
@@ -260,9 +232,6 @@ extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UI
     }
     
     func imagePicker(_ imagePicker: WDImagePicker, pickedImage: UIImage) {
-        //        self.profilePhotoImageView.image = pickedImage
-        //        self.frontImageView.image = pickedImage
-        //        self.backImageView.image = pickedImage
         if imagePicked == 1 {
             self.frontImageView.image = pickedImage
         } else if imagePicked == 2 {
@@ -273,37 +242,37 @@ extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UI
     }
     
     func hideImagePicker() {
-        
         self.imagePicker.imagePickerController.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let images  = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        if imagePicked == 1 {
+            frontImageView.image = images
+        } else if imagePicked == 2 {
+            backImageView.image = images
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
         
-        
         picker.dismiss(animated: true, completion: nil)
-        
+    }
+   
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
-// MARK: hidden keyboard when button tap
-extension UIViewController {
-    func hideKeyboardOnTap(_ selector: Selector) {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-}
-
+//MARK: Scan barcode
 extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
+    
     func scanBarCodeUseCamera()  {
-        //Creating session
-        //        let session = AVCaptureSession()
-        
-        //Define capture devcie
         captureDevice = AVCaptureDevice.default(for: .video)
         
         if let captureDevice = captureDevice {
-            
             do {
                 let input = try AVCaptureDeviceInput(device: captureDevice)
                 
@@ -349,14 +318,13 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
         
         codedLabel.frame = CGRect(x: 0, y: 0, width: 250, height: 200)
         codedLabel.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY - 150 )
-        codedLabel.text = "Scane your card's barcode"
+        codedLabel.text = "Scan your cards barcode"
         codedLabel.numberOfLines = 1
         codedLabel.textColor = UIColor.white
         codedLabel.font = UIFont.systemFont(ofSize: 19)
         codedLabel.backgroundColor = UIColor.clear
         
         self.view.addSubview(codedLabel)
-        
     }
     
     @objc func buttonAction(sender: UIButton!) {
@@ -372,16 +340,12 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count == 0 {
             print("No Input Detected")
-            
             return
         }
-        
         let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         
         guard let stringCodeValue = metadataObject.stringValue else { return }
-        
-        //        guard let barcodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObject) else { return }
-        
+       
         let alert = UIAlertController(title: "Card barcode", message: stringCodeValue, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Retake", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (nil) in
@@ -398,6 +362,32 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
+//MARK: UITextView
+extension AddCardVC: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        textView.textContainer.maximumNumberOfLines = 5
+        textView.textContainer.lineBreakMode = .byTruncatingTail
+        let newText = (descriptionCard.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        
+        if(numberOfChars <= 140) {
+            self.characterLabel.text = "\(140 - numberOfChars)"
+            return true
+        } else{
+            return false
+        }
+    }
+}
+
+// MARK: hidden keyboard when button tap
+extension UIViewController {
+    func hideKeyboardOnTap(_ selector: Selector) {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+}
 
 
 

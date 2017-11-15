@@ -41,6 +41,7 @@ class Manager {
         // call save context method
         saveCard()
     }
+    
     private func  saveCard() {
         let context = getContext()
         do {
@@ -95,9 +96,6 @@ class Manager {
         return nil
         
     }
-    
-    
-    
     
     public func generateBarCodeFromString(barcode: String) -> UIImage? {
         

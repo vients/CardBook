@@ -19,7 +19,6 @@ class PopOverViewController: UIViewController {
 
     func buttonPressed(_ tag: Int) {
         delegate?.sortCard(sortOperation(rawValue: tag)!)
-        print("asaad\(tag)")
     }
     @IBAction func sortCardName(_ sender: UIButton) {
         buttonPressed(sender.tag)
@@ -33,10 +32,8 @@ class PopOverViewController: UIViewController {
     
     func buttonFilterColor(_ tag: Int) {
         delegate?.filterColor(tagColor(rawValue: tag)!)
-        print("asaad\(tag)")
     }
   
-    
     @IBAction func colorButton(_ sender: UIButton) {
         buttonFilterColor(sender.tag)
         dismiss(animated: true, completion: nil)

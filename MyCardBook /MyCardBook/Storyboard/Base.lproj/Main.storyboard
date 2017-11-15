@@ -109,11 +109,11 @@
                                                 <constraint firstAttribute="bottom" secondItem="liZ-9v-cFy" secondAttribute="bottom" priority="500" constant="5" id="8MK-FS-TS9"/>
                                                 <constraint firstItem="6Md-Lr-wfm" firstAttribute="leading" secondItem="liZ-9v-cFy" secondAttribute="trailing" constant="8" id="8bi-u9-q6A"/>
                                                 <constraint firstItem="atH-8c-Lwy" firstAttribute="top" secondItem="0DY-w0-F9v" secondAttribute="top" constant="8" id="9VI-cP-HZD"/>
-                                                <constraint firstItem="5oM-xm-pAB" firstAttribute="top" secondItem="0DY-w0-F9v" secondAttribute="topMargin" constant="3" id="AA7-YJ-RXa"/>
+                                                <constraint firstItem="5oM-xm-pAB" firstAttribute="top" secondItem="0DY-w0-F9v" secondAttribute="topMargin" id="AA7-YJ-RXa"/>
                                                 <constraint firstItem="ewD-4b-3WL" firstAttribute="leading" secondItem="liZ-9v-cFy" secondAttribute="trailing" constant="70" id="C86-X5-n3S"/>
                                                 <constraint firstAttribute="trailing" secondItem="atH-8c-Lwy" secondAttribute="trailing" constant="8" id="JNB-DV-xL8"/>
                                                 <constraint firstItem="ewD-4b-3WL" firstAttribute="top" secondItem="6Md-Lr-wfm" secondAttribute="bottom" constant="8" id="JVC-Pc-x37"/>
-                                                <constraint firstItem="5oM-xm-pAB" firstAttribute="trailing" secondItem="0DY-w0-F9v" secondAttribute="trailingMargin" id="L9I-XM-cp1"/>
+                                                <constraint firstItem="5oM-xm-pAB" firstAttribute="trailing" secondItem="0DY-w0-F9v" secondAttribute="trailingMargin" constant="7" id="L9I-XM-cp1"/>
                                                 <constraint firstItem="atH-8c-Lwy" firstAttribute="leading" secondItem="0DY-w0-F9v" secondAttribute="leading" constant="8" id="XtP-PA-D2A"/>
                                                 <constraint firstItem="HpJ-ZY-ZQy" firstAttribute="leading" secondItem="0DY-w0-F9v" secondAttribute="leading" constant="18" id="Y9J-OU-xCo"/>
                                                 <constraint firstAttribute="trailing" secondItem="HpJ-ZY-ZQy" secondAttribute="trailing" constant="8" id="dw4-d6-RgQ"/>
@@ -250,7 +250,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDQ-J6-3aw">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2017-11-01 at 1.01.26 AM" translatesAutoresizingMaskIntoConstraints="NO" id="xfA-Si-OQ3">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="front" translatesAutoresizingMaskIntoConstraints="NO" id="xfA-Si-OQ3">
                                                 <rect key="frame" x="47" y="75" width="273" height="128"/>
                                                 <color key="backgroundColor" red="0.38541185859999999" green="0.46500062939999998" blue="0.56482243539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -961,8 +961,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Screen Shot 2017-11-01 at 1.01.26 AM" width="680" height="440"/>
         <image name="Screen Shot 2017-11-01 at 1.01.38 AM" width="680" height="436"/>
+        <image name="front" width="680" height="440"/>
         <image name="info" width="64" height="64"/>
         <image name="open (2)" width="128" height="128"/>
         <image name="order (4)" width="24" height="24"/>
