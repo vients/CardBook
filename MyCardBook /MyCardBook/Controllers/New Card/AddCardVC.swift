@@ -22,16 +22,15 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     @IBOutlet weak var barcodeTextField: UITextField!
     @IBOutlet weak var descriptionCard: UITextView!
     @IBOutlet weak var characterLabel: UILabel!
-
+    
     @IBOutlet var colorFilterCollection: [BEMCheckBox]!
     @IBOutlet weak var descriptionLabelToTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var labelBarcodeToDescriptionConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var generateBarcode: UIButton!
     @IBOutlet weak var createBarcodeButton: UIButton!
     
     fileprivate var imagePicker: WDImagePicker!
-   
+    
     var captureDevice:AVCaptureDevice?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var captureSession:AVCaptureSession?
@@ -43,7 +42,7 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     private var imagePicked = 0
     private var colorTag : Int? = 0
     public var logo = "cardPlus"
-   
+    
     var isExpanded:Bool = false
     {
         didSet
@@ -59,34 +58,26 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
             }
         }
     }
-//    var hiddenBarcodeImage: Bool = false
-//    {
-//        didSet
-//        {
-//            if !hiddenBarcodeImage {
-//                self.labelBarcodeToDescriptionConstraint.constant = 5.0
-//            } else {
-//                self.labelBarcodeToDescriptionConstraint.constant = 82.0
-//            }
-//        }
-//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addLogoToNavigationBar(logo: logo)
         isExpanded = false
-//        hiddenBarcodeImage = false
-        self.frontImageView.layer.borderWidth = 3.0
-        self.frontImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
+        //        self.frontImageView.layer.cornerRadius = 15
+//        self.frontImageView.layer.borderWidth = 3.0
+//        self.frontImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
+//        self.barcodeImageView.layer.borderWidth = 3.0
+//        self.barcodeImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
         editCardFunc()
-       generateBarcode.isHidden = true
-
+        generateBarcode.isHidden = true
+        
     }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    func addLogoToNavigationBar(logo: String)  {
+    func addLogoToNavigationBar(logo: String) {
         let logo = UIImage(named: logo)
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
@@ -94,11 +85,11 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
     
     @IBAction func createBarCode(_ sender: Any) {
         scanBarCodeUseCamera()
+        //        generateBarcode.isHidden = false
         isExpanded = true
     }
     @IBAction func buttonGenerateBarcode(_ sender: Any) {
-//        hiddenBarcodeImage = true
-        manager.generateBarCodeFromString(string: barcodeTextField.text!)
+        barcodeImageView.image = manager.generateBarCodeFromString(barcode: barcodeTextField.text!)
     }
     @IBAction func addColorFilter(_ sender: UIButton) {
         colorTag = nil
@@ -115,51 +106,41 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
         
     }
     
-//    @IBAction func click(_ sender: Any) {
-//        barcodeImageView.image =   RSUnifiedCodeGenerator.shared.generateCode(barcodeTextField.text!, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue)
-//    }
-    
     @IBAction func save(_ sender: UIBarButtonItem) {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+        
         if card == nil {
             let storeDescription = NSEntityDescription.entity(forEntityName: "Card", in: context)
             card = Card(entity: storeDescription!, insertInto: context)
         }
-        if nameCard.text != "" {
-        card?.name = nameCard.text!
-        card?.frontImage = manager.saveImagePath((frontImageView?.image)!)
-        card?.backImage = manager.saveImagePath((backImageView?.image)!)
-        card?.barcode = barcodeTextField.text!
-//        barcodeImageView.image = manager.generateBarCodeFromString(string: barcodeTextField.text!)
-//        if
-//        card?.barcode = manager.saveImagePath(barcodeImageView.image!)
-        if barcodeImageView.image == nil{
-            card?.barcodeImage = ""
-        } else{
-            card?.barcodeImage = manager.saveImagePath(barcodeImageView.image!)
+        if nameCard.text != ""  {
+            card?.name = nameCard.text!
+            card?.frontImage = manager.saveImagePath((frontImageView?.image)!)
+            card?.backImage = manager.saveImagePath((backImageView?.image)!)
+            card?.barcode = barcodeTextField.text!
+            if barcodeImageView.image == nil{
+                card?.barcodeImage = ""
+            } else {
+                card?.barcodeImage = manager.saveImagePath(barcodeImageView.image!)
+                
+            }
+            card?.cardDescription = descriptionCard.text
+            card?.date = Date()
+            card?.colorFilter =  String(colorTag!)
             
-        }
-//        barcodeImageView.image =   RSUnifiedCodeGenerator.shared.generateCode("4011200296908", machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue)
-
-        card?.cardDescription = descriptionCard.text
-        card?.date = Date()
-        card?.colorFilter =  String(colorTag!)
-
-        //        if (cards?.frontImage.isEmpty)! {
-        //            cards?.frontImage = addToUrl((frontImageView?.image)!)
-        //        }
-
-        // create card in inside manager
-        manager.addCard()
-        performSegue(withIdentifier: "unwindToCardList", sender: self)
+            manager.addCard()
+            performSegue(withIdentifier: "unwindToCardList", sender: self)
+            
         } else {
-            let alertVC = UIAlertController(title: "Oops!", message: "Please fill in all fields for create card!", preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alertVC.addAction(okAction)
-        self.present(alertVC, animated: true, completion: nil)
+            let alertAddVC = UIAlertController(title: "Oops!",
+                                               message: "Please fill in all fields for create card!",
+                                               preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertAddVC.addAction(okAction)
+            
+            self.present(alertAddVC, animated: true, completion: nil)
         }
     }
     
@@ -169,7 +150,7 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
         textView.textContainer.lineBreakMode = .byTruncatingTail
         let newText = (descriptionCard.text as NSString).replacingCharacters(in: range, with: text)
         let numberOfChars = newText.count
-       
+        
         if(numberOfChars <= 140) {
             self.characterLabel.text = "\(140 - numberOfChars)"
             return true
@@ -177,61 +158,61 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
             return false
         }
     }
-
+    
     @IBAction func addFrontImage(_ sender: UIButton) {
         chooseImage()
-//        showCustomPicker(.photoLibrary)
+        //        showCustomPicker(.photoLibrary)
         imagePicked = sender.tag
     }
-
+    
     @IBAction func addBackCardImage(_ sender: UIButton) {
         chooseImage()
         imagePicked = sender.tag
     }
     
     private func chooseImage() {
-
+        
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
-
+        
         let actionSheet = UIAlertController(title: "Photo Source", message: nil, preferredStyle: .actionSheet)
-
+        
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
-
+            
             if UIImagePickerController.isSourceTypeAvailable(.camera){
                 imagePickerController.sourceType = .camera
                 self.showCustomPicker(.camera)
-//                imagePickerController.allowsEditing = true
+                //                imagePickerController.allowsEditing = true
                 self.present(imagePickerController, animated: true, completion: nil)
             } else{
                 print("Camera not available")
             }
         }))
-
+        
         actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
             imagePickerController.sourceType = .photoLibrary
             self.showCustomPicker(.photoLibrary)
             self.present(imagePickerController, animated: true, completion: nil)
         }))
-
+        
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
+        
         self.present(actionSheet, animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let images  = info[UIImagePickerControllerOriginalImage] as! UIImage
-
+        
         if imagePicked == 1 {
             frontImageView.image = images
         } else if imagePicked == 2 {
             backImageView.image = images
         }
-
+        
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
@@ -255,17 +236,17 @@ class AddCardVC: UIViewController ,UITextViewDelegate, BEMCheckBoxDelegate {
         }
     }
     public func generateBarCodeFromString(string: String) -> UIImage? {
-      
+        
         
         let imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(string, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue)
         return imageBarCode
     }
-  
+    
 }
 
 extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UINavigationControllerDelegate {
     
-     func showCustomPicker(_ type: UIImagePickerControllerSourceType){
+    func showCustomPicker(_ type: UIImagePickerControllerSourceType){
         self.imagePicker = WDImagePicker()
         self.imagePicker.cropSize = CGSize(width: 280, height: 280)
         self.imagePicker.delegate = self
@@ -279,25 +260,25 @@ extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UI
     }
     
     func imagePicker(_ imagePicker: WDImagePicker, pickedImage: UIImage) {
-//        self.profilePhotoImageView.image = pickedImage
-//        self.frontImageView.image = pickedImage
-//        self.backImageView.image = pickedImage
+        //        self.profilePhotoImageView.image = pickedImage
+        //        self.frontImageView.image = pickedImage
+        //        self.backImageView.image = pickedImage
         if imagePicked == 1 {
             self.frontImageView.image = pickedImage
         } else if imagePicked == 2 {
             self.backImageView.image = pickedImage
         }
-
+        
         self.hideImagePicker()
     }
     
     func hideImagePicker() {
-
+        
         self.imagePicker.imagePickerController.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
-       
+        
         
         picker.dismiss(animated: true, completion: nil)
         
@@ -316,7 +297,7 @@ extension UIViewController {
 extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
     func scanBarCodeUseCamera()  {
         //Creating session
-//        let session = AVCaptureSession()
+        //        let session = AVCaptureSession()
         
         //Define capture devcie
         captureDevice = AVCaptureDevice.default(for: .video)
@@ -334,7 +315,7 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession.addOutput(captureMetadataOutput)
                 
                 captureMetadataOutput.setMetadataObjectsDelegate(self, queue: .main)
-                captureMetadataOutput.metadataObjectTypes = [.code128, .qr, .ean13,  .ean8, .code39] //AVMetadataObject.ObjectType
+                captureMetadataOutput.metadataObjectTypes = [.code128, .ean13,  .ean8, .code39] //AVMetadataObject.ObjectType
                 
                 captureSession.startRunning()
                 
@@ -375,14 +356,13 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
         codedLabel.backgroundColor = UIColor.clear
         
         self.view.addSubview(codedLabel)
-
+        
     }
-   
+    
     @objc func buttonAction(sender: UIButton!) {
         print("Button tapped")
         generateBarcode.isHidden = false
         createBarcodeButton.isHidden = true
-//        barcodeImageView.isHidden = true
         buttonOnSubView.removeFromSuperview()
         codedLabel.removeFromSuperview()
         self.videoPreviewLayer?.removeFromSuperlayer()
@@ -399,15 +379,15 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
         let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         
         guard let stringCodeValue = metadataObject.stringValue else { return }
-       
-//        guard let barcodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObject) else { return }
-      
+        
+        //        guard let barcodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObject) else { return }
+        
         let alert = UIAlertController(title: "Card barcode", message: stringCodeValue, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Retake", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (nil) in
             self.barcodeTextField.text = stringCodeValue
-            self.barcodeImageView.image = self.manager.generateBarCodeFromString(string: stringCodeValue)
-           
+            self.barcodeImageView.image = self.manager.generateBarCodeFromString(barcode: stringCodeValue)
+            
             self.codedLabel.removeFromSuperview()
             self.buttonOnSubView.removeFromSuperview()
             self.videoPreviewLayer?.removeFromSuperlayer()
@@ -418,7 +398,7 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
-    
+
 
 
 

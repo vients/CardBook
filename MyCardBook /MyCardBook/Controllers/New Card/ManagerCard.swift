@@ -22,10 +22,6 @@ class Manager {
         return appDelegate.persistentContainer.viewContext
     }
     
-    func addCard() {
-        saveCard()
-    }
-    
     func fetch() -> [Card] {
         let context = getContext()
         do {
@@ -53,14 +49,18 @@ class Manager {
             fatalError("Failure to save context: \(error)")
         }
     }
-   
+    
+    func addCard() {
+        saveCard()
+    }
+    
     public func saveImagePath (_ photo: UIImage )  -> String {
         
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
         
         let imgName = UUID().uuidString + ".jpg"
         
-        let imgPath = URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent(imgName))// Change extension if you want to save as PNG
+        let imgPath = URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent(imgName))
         
         let imageString = String(describing: imgPath)
         
@@ -82,43 +82,50 @@ class Manager {
         
         let imageURL = URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent(imgName))
         
-//        DispatchQueue.main.async {
+        //        DispatchQueue.main.async {
         do {
-             imageData = try Data(contentsOf: imageURL)
-             image  = UIImage(data: imageData!)
+            imageData = try Data(contentsOf: imageURL)
+            image  = UIImage(data: imageData!)
             return image
-           
+            
         } catch {
             print(error.localizedDescription)
         }
-//        }
-    
+        
         return nil
         
     }
-   
-//    public func generateBarCodeFromString(string: String) -> UIImage? {
-//        let data = string.data(using: String.Encoding.ascii)
-//
-//        if let filter = CIFilter(name: "CICode128BarcodeGenerator") {
-//            filter.setValue(data, forKey: "inputMessage")
-//            if let output = filter.outputImage {
-//                return UIImage(ciImage: output)
-//            }
-//        }
-//
-//        return nil
-//
-//
-//    }
     
-    public func generateBarCodeFromString(string: String) -> UIImage? {
+    
+    
+    
+    public func generateBarCodeFromString(barcode: String) -> UIImage? {
         
+        var imageBarCode: UIImage?
         
-        let imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(string, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue)
+        if RSUnifiedCodeValidator.shared.isValid(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.code128.rawValue) {
+            imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.code128.rawValue)
+            
+            return imageBarCode!
+        } else if
+            RSUnifiedCodeValidator.shared.isValid(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue){
+            imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean13.rawValue )
+            
+            return imageBarCode!
+        }  else if
+            RSUnifiedCodeValidator.shared.isValid(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean8.rawValue) {
+            imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.ean8.rawValue)
+            
+            return imageBarCode!
+        } else if
+            RSUnifiedCodeValidator.shared.isValid(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.code39.rawValue) {
+            imageBarCode = RSUnifiedCodeGenerator.shared.generateCode(barcode, machineReadableCodeObjectType: AVMetadataObject.ObjectType.code39.rawValue)
+            
+            return imageBarCode!
+        }
         return imageBarCode
+        
     }
-   
     
 }
 

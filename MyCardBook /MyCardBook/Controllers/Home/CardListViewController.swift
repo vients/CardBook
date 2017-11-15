@@ -30,10 +30,10 @@ class CardListViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        let logo = UIImage(named: "cardLogo.png")
-//        let imageView = UIImageView(image:logo)
-//        self.navigationItem.titleView = imageView
+        
+        //        let logo = UIImage(named: "cardLogo.png")
+        //        let imageView = UIImageView(image:logo)
+        //        self.navigationItem.titleView = imageView
         addLogoToNavigationBar(logo: "123.png")
         searchControll()
         refreshTable()
@@ -44,6 +44,7 @@ class CardListViewController: UIViewController, UIPopoverPresentationControllerD
     func searchControll() {
         searchController = UISearchController(searchResultsController: nil)
         cardTableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.barTintColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search card..."
@@ -53,14 +54,14 @@ class CardListViewController: UIViewController, UIPopoverPresentationControllerD
     {
         refresher = UIRefreshControl()
         cardTableView.addSubview(refresher)
-//        refresher.tintColor = UIColor.black
+        //        refresher.tintColor = UIColor.black
         refresher.addTarget(self, action: #selector(reloadTable), for: .valueChanged)
     }
     
     func estimateRow() {
-    cardTableView.estimatedRowHeight = 200.0
-    cardTableView.rowHeight = UITableViewAutomaticDimension
-    cardTableView.tableFooterView = UIView()
+        cardTableView.estimatedRowHeight = 200.0
+        cardTableView.rowHeight = UITableViewAutomaticDimension
+        cardTableView.tableFooterView = UIView()
     }
     
     func addLogoToNavigationBar(logo: String)  {
@@ -116,7 +117,7 @@ class CardListViewController: UIViewController, UIPopoverPresentationControllerD
         fetchRequest.predicate = NSPredicate(format: "colorFilter == %@", filter)
         cards = try! context.fetch(fetchRequest) as! [Card]
     }
-
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle{
         return .none
     }
@@ -137,23 +138,24 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.cellIdentifier.cardListCell, for: indexPath)
             as! CardTableViewCell
         cell.delegate = self
-        let cardArray = (searchController.isActive) ? searchResult[indexPath.row] : cards[indexPath.row]
-       
-        cell.nameCard.text = cardArray.name
-        cell.frontImage.image = manager.loadImageFromPath(imgName: cardArray.frontImage)
+        let card = (searchController.isActive) ? searchResult[indexPath.row] : cards[indexPath.row]
+        
+        cell.nameCard.text = card.name
+        cell.frontImage.image = manager.loadImageFromPath(imgName: card.frontImage)
         let dateformat = DateFormatter()
         dateformat.dateStyle = .medium
-        cell.date.text = dateformat.string(from: cardArray.date)
-        cell.cardDescription.text = cardArray.cardDescription
+        cell.date.text = dateformat.string(from: card.date)
+        //        cell.date.text = card.date ? dateformat.string(from: cardArray.date) : ""
+        cell.cardDescription.text = card.cardDescription
         
-        if cardArray.cardDescription == ""{
+        if card.cardDescription == ""{
             cell.detailButton.isHidden = true
         } else {
             cell.detailButton.isHidden = false
         }
         cell.isExpanded = false
         
-        switch cardArray.colorFilter {
+        switch card.colorFilter {
         case "0":
             cell.colorTag.backgroundColor = #colorLiteral(red: 1, green: 0.9902437188, blue: 0.3926091776, alpha: 1)
         case "1":
@@ -164,11 +166,11 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
             cell.colorTag.backgroundColor = #colorLiteral(red: 0.8885628173, green: 0.6106459762, blue: 0.08318695495, alpha: 1)
         case "4":
             cell.colorTag.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-       
+            
         default:
             break
         }
-
+        
         return cell
     }
     
@@ -179,7 +181,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
         }
         
         cell.isExpanded = !cell.isExpanded
-//        self.cardTableView.reloadRows(at: [indexPath], with: .fade)
+        //        self.cardTableView.reloadRows(at: [indexPath], with: .fade)
         self.cardTableView.beginUpdates()
         self.cardTableView.endUpdates()
         
@@ -202,8 +204,8 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
             
             let selectedFile = self.cards[indexPath.row].frontImage
             let selectedName = self.cards[indexPath.row].name
-//            self.sendEmail(attachment: selectedFile, title: selectedName)
-//            self.sendMessage(attachment: selectedFile, title: selectedName)
+            //            self.sendEmail(attachment: selectedFile, title: selectedName)
+            //            self.sendMessage(attachment: selectedFile, title: selectedName)
             
             let alert = UIAlertController(title: "Action Share", message: "Please enter ......", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -229,7 +231,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
             
             self.manager.delete(card: self.cards[indexPath.row])
             
-//            self.cards = self.manager.fetch()
+            //            self.cards = self.manager.fetch()
             self.reloadTable()
             
         }
@@ -244,7 +246,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
         self.cardTableView.reloadData()
         refresher.endRefreshing()
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // constants segue
@@ -252,14 +254,14 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
             let detailVC = segue.destination as! DetailViewController
             let indexpath = self.cardTableView.indexPathForSelectedRow
             let row = indexpath?.row
-//            detailVC.cardsDetail = cards[row!]
+            //            detailVC.cardsDetail = cards[row!]
             
             if cards[row!].barcode.isEmpty{
                 detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage]
                 print("Array count =\(detailVC.imageCardsArray.count)")
             } else {
                 detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage,cards[row!].barcodeImage ]
-                 print("Array count =\(detailVC.imageCardsArray.count)")
+                print("Array count =\(detailVC.imageCardsArray.count)")
             }
         } else if segue.identifier == "editCardSegue" {
             
@@ -277,7 +279,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate, Ca
     
     
     @IBAction func unwindToCardList(segue: UIStoryboardSegue){
-//        dismiss(animated: true, completion: nil)
+        //        dismiss(animated: true, completion: nil)
     }
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
@@ -330,7 +332,7 @@ extension CardListViewController: MFMailComposeViewControllerDelegate{
             let mimeType = MIMEType(type: fileExtension) {
             
             // Add attachment
-        mailComposer.addAttachmentData(fileData, mimeType: mimeType.rawValue,fileName: filename)
+            mailComposer.addAttachmentData(fileData, mimeType: mimeType.rawValue,fileName: filename)
             
             // Present mail view controller on screen
             present(mailComposer, animated: true, completion: nil)
@@ -356,18 +358,18 @@ extension CardListViewController: MFMailComposeViewControllerDelegate{
 extension CardListViewController: MFMessageComposeViewControllerDelegate {
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-       
+        
         switch(result) {
         case MessageComposeResult.cancelled:
             print("SMS cancelled")
         case MessageComposeResult.failed:
             let alertMessage = UIAlertController(title: "Failure", message: "Failed to sent the message", preferredStyle: .alert)
             alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-           present(alertMessage, animated: true, completion: nil)
+            present(alertMessage, animated: true, completion: nil)
             
         case MessageComposeResult.sent:
             print("SMS sent")
-      
+            
         }
         dismiss(animated: true, completion: nil)
     }
@@ -380,15 +382,10 @@ extension CardListViewController: MFMessageComposeViewControllerDelegate {
         let messageController = MFMessageComposeViewController()
         messageController.messageComposeDelegate = self
         
-        // Determine the file name and extension
-//        let fileparts = attachment.components(separatedBy: ".")
-//        let filename = fileparts[0]
-//        let fileExtension = fileparts[1]
-        
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
         
         let imageURL = URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent(attachment))
-
+        
         messageController.addAttachmentURL(imageURL, withAlternateFilename: nil)
         
         messageController.recipients = ["+380", "Name"]
@@ -399,3 +396,4 @@ extension CardListViewController: MFMessageComposeViewControllerDelegate {
     }
     
 }
+

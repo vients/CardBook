@@ -51,7 +51,7 @@ class CardTableViewCell: UITableViewCell {
         
         
         backgroundCardView.backgroundColor = UIColor.white
-//        contentView.backgroundColor = #colorLiteral(red: 0.7644296288, green: 0.7681693435, blue: 0.7971302271, alpha: 1)
+        contentView.backgroundColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
 //            UIColor(red: 200/255.0, green: 200/255.0, blue: 240/255.0, alpha: 1.0)
         backgroundCardView.layer.cornerRadius = 5.0
         backgroundCardView.layer.masksToBounds = false
