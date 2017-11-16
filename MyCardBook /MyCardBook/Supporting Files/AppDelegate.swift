@@ -47,7 +47,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
-
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+         if shortcutItem.type == "newCard" {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainVC = storyboard.instantiateViewController(withIdentifier: "Main") as! UINavigationController
+        let addVC : AddCardVC = storyboard.instantiateViewController(withIdentifier: "AddCardVC") as! AddCardVC
+        window?.rootViewController = mainVC
+        self.window?.makeKeyAndVisible()
+        mainVC.pushViewController(addVC, animated: true)
+        }
+    }
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {

@@ -239,7 +239,7 @@
         <!--Delegate-->
         <scene sceneID="F6X-0p-mST">
             <objects>
-                <viewController id="XFf-aO-WEi" customClass="AddCardVC" customModule="MyCardBook" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddCardVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XFf-aO-WEi" customClass="AddCardVC" customModule="MyCardBook" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cnl-rZ-yfe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -944,7 +944,7 @@
         <!--Navigation Controller-->
         <scene sceneID="H5V-UF-alD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MNl-i8-duo" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Main" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MNl-i8-duo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="7gp-si-VHw"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kKl-yU-Han">
@@ -969,6 +969,6 @@
         <image name="order (4)" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7WP-bq-wzx"/>
+        <segue reference="sCc-Fy-c8w"/>
     </inferredMetricsTieBreakers>
 </document>
