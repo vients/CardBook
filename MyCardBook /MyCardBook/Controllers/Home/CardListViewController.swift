@@ -11,14 +11,14 @@ import CoreData
 import MessageUI
 
 class CardListViewController: UIViewController{
-    struct Constant {
-        struct cellIdentifier {
-            static let cardListCell = "Cell"
-        }
-        struct segue {
-            
-        }
-    }
+//    struct Constant {
+//        struct cellIdentifier {
+//            static let cardListCell = "Cell"
+//        }
+//        struct segue {
+//            
+//        }
+//    }
     
     @IBOutlet private weak var cardTableView: UITableView!
     private var cards = [Card]()
@@ -85,7 +85,8 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.frontImage.image = manager.loadImageFromPath(imgName: card.frontImage)
         let dateformat = DateFormatter()
         dateformat.dateStyle = .medium
-        cell.date.text = dateformat.string(from: card.date)
+        if card.name != ""{
+            cell.date.text = dateformat.string(from: card.date)}
         cell.cardDescription.text = card.cardDescription
         
         if card.cardDescription == ""{
@@ -113,32 +114,17 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-//    func buttonTapped(cell: CardTableViewCell) {
-//        guard let indexPath = self.cardTableView.indexPath(for: cell) else {
-//            return
-//        }
-//
-//        cell.isExpanded = !cell.isExpanded
-//        //        self.cardTableView.reloadRows(at: [indexPath], with: .fade)
-//        self.cardTableView.beginUpdates()
-//        self.cardTableView.endUpdates()
-//
-//        print("Button tapped on row \(indexPath.row)")
-//    }
-    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let editAction = UITableViewRowAction(style: .default, title: "Edit") { action, index in
-            print("edit button tapped")
-            
+           
             // move segue name to constants
-            self.performSegue(withIdentifier: "editCardSegue", sender: self.cards[indexPath.row])
+            self.performSegue(withIdentifier: Constant.segue.editCardSegue, sender: self.cards[indexPath.row])
             
         }
         editAction.backgroundColor = UIColor.lightGray
         
         let shareAction = UITableViewRowAction(style: .default, title: "Share") { action, index in
-            print("share button tapped")
-            
+          
             let selectedFile = self.cards[indexPath.row].frontImage
             let selectedName = self.cards[indexPath.row].name
             
@@ -160,8 +146,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
         shareAction.backgroundColor = UIColor(red: 28.0/255.0, green: 165.0/255.0, blue: 253.0/255.0, alpha: 1.0)
         
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { action, index in
-            print("delete button tapped")
-            
+          
             self.manager.delete(card: self.cards[indexPath.row])
             
             self.reloadTable()
@@ -180,44 +165,29 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // constants segue
-        if segue.identifier == "detailViewSegue"{
+        if segue.identifier == Constant.segue.detailVCSegue {
             let detailVC = segue.destination as! DetailViewController
             let indexpath = self.cardTableView.indexPathForSelectedRow
             let row = indexpath?.row
             //    detailVC.cardsDetail = cards[row!]
             
-            if cards[row!].barcode.isEmpty {
+            if (cards[row!].barcode?.isEmpty)! {
                 detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage]
             } else {
                 detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage,cards[row!].barcodeImage ]
             }
             
-        } else if segue.identifier == "editCardSegue" {
+        } else if segue.identifier == Constant.segue.detailVCSegue {
             let viewController = segue.destination as! AddCardVC
             viewController.logo = "edit"
             viewController.card = sender as? Card
             
-        } else if segue.identifier == "popoverSegue"{
+        } else if segue.identifier == Constant.segue.popoverSegue {
             let popoverViewController = segue.destination as! PopOverViewController
             popoverViewController.delegate = self
             popoverViewController.popoverPresentationController?.delegate = self
         }
     }
-    
-//    func updateSearchResults(for searchController: UISearchController) {
-//        if let searchText = searchController.searchBar.text {
-//            filterContent(searchText: searchText)
-//            cardTableView.reloadData()
-//        }
-//    }
-//
-//    func filterContent(searchText: String) {
-//        searchResult = cards.filter({(cards: Card)-> Bool in
-//            let nameCard = cards.name.range(of: searchText, options: String.CompareOptions.caseInsensitive)
-//
-//            return nameCard != nil
-//        })
-//    }
     
 }
 //MARK: Sort Card List
@@ -388,7 +358,7 @@ extension CardListViewController: MFMessageComposeViewControllerDelegate {
         
         messageController.addAttachmentURL(imageURL, withAlternateFilename: nil)
         
-        messageController.recipients = ["+380", "Name"]
+        messageController.recipients = ["+380"]
         messageController.body = "Card Name - \(title)"
         
         present(messageController, animated: true, completion: nil)

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyCardBook/Controllers/Login/LoginViewController.swift"
-            timestampString = "532438955.454192"
+            filePath = "MyCardBook/Controllers/New Card/AddCardVC.swift"
+            timestampString = "532523130.393209"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "authenticateWithTouchID()"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "addColorFilter(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,45 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyCardBook/Controllers/Login/LoginViewController.swift"
-            timestampString = "532438955.454285"
+            filePath = "MyCardBook/Controllers/New Card/AddCardVC.swift"
+            timestampString = "532523130.39338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyCardBook/Controllers/Login/LoginViewController.swift"
-            timestampString = "532438955.454381"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "authenticateWithTouchID()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyCardBook/Controllers/Login/LoginViewController.swift"
-            timestampString = "532438955.454476"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "authenticate()"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "saveToCoreData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

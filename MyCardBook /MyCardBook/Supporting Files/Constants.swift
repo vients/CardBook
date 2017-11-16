@@ -8,6 +8,19 @@
 
 import Foundation
 
+struct Constant {
+    struct cellIdentifier {
+        static let cardListCell = "Cell"
+    }
+    struct segue {
+        static let editCardSegue = "editCardSegue"
+        static let detailVCSegue = "detailViewSegue"
+        static let popoverSegue = "popoverSegue"
+    }
+    struct identifier {
+        static let cardListIdentifier = "unwindToCardList"
+    }
+}
 enum sortOperation: Int {
     case sortFromAtoZ = 0
     case sortFromZtoA = 1
@@ -37,19 +50,19 @@ enum MIMEType: String {
     
 }
 
-extension UIView {
-    
-    func setCardView(view : UIView){
-        
-        view.layer.cornerRadius = 5.0
-        view.layer.borderColor  =  UIColor.clear.cgColor
-        view.layer.borderWidth = 5.0
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowColor =  UIColor.lightGray.cgColor
-        view.layer.shadowRadius = 5.0
-        view.layer.shadowOffset = CGSize(width:5, height: 5)
-        view.layer.masksToBounds = true
-        
-    }
-}
+//extension UIView {
+//
+//    func setCardView(view : UIView){
+//
+//        view.layer.cornerRadius = 5.0
+//        view.layer.borderColor  =  UIColor.clear.cgColor
+//        view.layer.borderWidth = 5.0
+//        view.layer.shadowOpacity = 0.5
+//        view.layer.shadowColor =  UIColor.lightGray.cgColor
+//        view.layer.shadowRadius = 5.0
+//        view.layer.shadowOffset = CGSize(width:5, height: 5)
+//        view.layer.masksToBounds = true
+//
+//    }
+//}
 

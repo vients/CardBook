@@ -59,7 +59,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate{
     }
     
     @IBAction func backButton(_ sender: Any) {
-        performSegue(withIdentifier: "unwindToCardList", sender: self)
+        performSegue(withIdentifier: Constant.identifier.cardListIdentifier, sender: self)
     }
     
 }

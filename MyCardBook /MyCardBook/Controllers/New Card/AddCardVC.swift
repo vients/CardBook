@@ -13,6 +13,7 @@ import AVFoundation
 
 class AddCardVC: UIViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var addCardView: UIView!
     @IBOutlet weak var frontImageView: UIImageView!
     @IBOutlet weak var backImageView: UIImageView!
@@ -41,6 +42,7 @@ class AddCardVC: UIViewController {
     let buttonOnSubView = UIButton(type: UIButtonType.system)
     let codedLabel:UILabel = UILabel()
     private var imagePicked = 0
+    private var activeField: UITextField?
     private var colorTag : Int? = 0
     public var logo = "cardPlus"
     
@@ -69,7 +71,10 @@ class AddCardVC: UIViewController {
         generateBarcode.isHidden = true
         editCardFunc()
         borderOnImage()
+        nameCard.delegate = self
+        descriptionCard.delegate = self
         self.hideKeyboardOnTap(#selector(self.dismissKeyboard))
+
     }
   
     @IBAction func createBarCode(_ sender: Any) {
@@ -134,7 +139,7 @@ class AddCardVC: UIViewController {
             card?.colorFilter =  String(colorTag!)
             
             manager.addCard()
-            performSegue(withIdentifier: "unwindToCardList", sender: self)
+            performSegue(withIdentifier: Constant.identifier.cardListIdentifier, sender: self)
             
         } else {
             let alertAddVC = UIAlertController(title: "Oops!",
@@ -150,6 +155,9 @@ class AddCardVC: UIViewController {
     
     private func editCardFunc() {
         if let card = card {
+            isExpanded = true
+            generateBarcode.isHidden = false
+            colorFilterCollection[0].setOn(false, animated: true)
             nameCard.text = card.name
             frontImageView.image = manager.loadImageFromPath(imgName: card.frontImage)
             backImageView.image = manager.loadImageFromPath(imgName: card.backImage)
@@ -162,25 +170,46 @@ class AddCardVC: UIViewController {
             colorFilterCollection[index].setOn(true, animated: true)
         }
     }
-    
+
     private func borderOnImage(){
         self.frontImageView.layer.borderWidth = 3.0
         self.frontImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
-        self.barcodeImageView.layer.borderWidth = 3.0
-        self.barcodeImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
+        self.backImageView.layer.borderWidth = 3.0
+        self.backImageView.layer.borderColor = #colorLiteral(red: 0.3854118586, green: 0.4650006294, blue: 0.5648224354, alpha: 1)
     }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
     
-    func addLogoToNavigationBar(logo: String) {
+    private func addLogoToNavigationBar(logo: String) {
         let logo = UIImage(named: logo)
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
     }
     @IBAction func done(_ sender: Any) {
-        performSegue(withIdentifier: "unwindToCardList", sender: self)
+        performSegue(withIdentifier: Constant.identifier.cardListIdentifier, sender: self)
+    }
+    
+    private func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc func keyboardWillShow(notification:NSNotification){
+        
+        var userInfo = notification.userInfo!
+        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+
+        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        scrollView.contentInset = contentInset
+    }
+
+    @objc func keyboardWillHide(notification:NSNotification){
+        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
     }
 
 }
@@ -301,7 +330,7 @@ extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
             }
         }
     }
-    func addButtonOnSuperView(){
+     func addButtonOnSuperView(){
         buttonOnSubView.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
         buttonOnSubView.center = CGPoint(x: view.bounds.midX, y: view.bounds.maxY - 60)
         buttonOnSubView.backgroundColor = .clear
@@ -377,6 +406,25 @@ extension AddCardVC: UITextViewDelegate {
         } else{
             return false
         }
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        let scrollPoint : CGPoint = CGPoint.init(x:0, y: textView.frame.origin.y - 190)
+        self.scrollView.setContentOffset(scrollPoint, animated: true)
+
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.scrollView.setContentOffset(CGPoint.zero, animated: true)
+
+    }
+}
+//MARK: TextField
+extension AddCardVC: UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = nameCard.text else { return true }
+        let newLength = text.count + string.count - range.length
+        return newLength <= 12
     }
 }
 

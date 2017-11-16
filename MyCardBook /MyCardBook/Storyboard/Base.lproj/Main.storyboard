@@ -248,7 +248,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="736"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDQ-J6-3aw">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="850"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="front" translatesAutoresizingMaskIntoConstraints="NO" id="xfA-Si-OQ3">
                                                 <rect key="frame" x="47" y="75" width="273" height="128"/>
@@ -548,7 +548,7 @@
                                             <constraint firstItem="1M2-Q0-Gga" firstAttribute="top" secondItem="uGt-du-1xh" secondAttribute="bottom" constant="15" id="S67-1Z-hrQ"/>
                                             <constraint firstAttribute="trailing" secondItem="rfs-Hl-4s2" secondAttribute="trailing" constant="15" id="TQt-7X-aNT"/>
                                             <constraint firstItem="HYU-4B-sXO" firstAttribute="leading" secondItem="CDQ-J6-3aw" secondAttribute="leading" constant="30" id="U0y-yl-fUY"/>
-                                            <constraint firstAttribute="height" constant="900" id="UUg-eC-hM3"/>
+                                            <constraint firstAttribute="height" constant="850" id="UUg-eC-hM3"/>
                                             <constraint firstItem="9AL-az-fr6" firstAttribute="top" secondItem="CDQ-J6-3aw" secondAttribute="top" constant="20" id="Wp0-Wd-RgC"/>
                                             <constraint firstItem="06p-LS-sf1" firstAttribute="top" secondItem="uGt-du-1xh" secondAttribute="top" id="YE1-fA-zpT"/>
                                             <constraint firstItem="06p-LS-sf1" firstAttribute="leading" secondItem="uGt-du-1xh" secondAttribute="leading" id="YQV-S1-AkD"/>
@@ -617,6 +617,7 @@
                         <outlet property="frontImageView" destination="xfA-Si-OQ3" id="O7N-Ab-Csa"/>
                         <outlet property="generateBarcode" destination="Q2J-li-xxI" id="3mo-3E-BlE"/>
                         <outlet property="nameCard" destination="9AL-az-fr6" id="ESz-OL-mH9"/>
+                        <outlet property="scrollView" destination="I0X-lI-tfE" id="kwN-Mk-yxw"/>
                         <outletCollection property="colorFilterCollection" destination="6XX-aw-esw" collectionClass="NSMutableArray" id="fNM-GC-lXt"/>
                         <outletCollection property="colorFilterCollection" destination="5Aa-Dr-zvG" collectionClass="NSMutableArray" id="cbc-bg-n3B"/>
                         <outletCollection property="colorFilterCollection" destination="VOF-w4-syI" collectionClass="NSMutableArray" id="FBW-nn-7bT"/>

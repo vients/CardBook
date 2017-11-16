@@ -29,10 +29,6 @@ class LoginViewController: UIViewController {
             authenticateWithTouchID()
         }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
         func backgroundEffect()  {
             backgroundImageView.image = UIImage(named: "cloud")
     
@@ -101,8 +97,6 @@ class LoginViewController: UIViewController {
         print("Successfully authenticated")
                
                 OperationQueue.main.addOperation({
-//                    self.isAuthenticate = true
-//                    self.user = "vients"
                 self.performSegue(withIdentifier: "showHomeScreen", sender: self.user)
                     
             })

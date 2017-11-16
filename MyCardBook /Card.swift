@@ -13,7 +13,7 @@ import CoreData
 @objc(Card)
 public class Card: NSManagedObject {
     @NSManaged public var backImage: String
-    @NSManaged public var barcode: String
+    @NSManaged public var barcode: String?
     @NSManaged public var barcodeImage: String
     @NSManaged public var cardDescription: String?
     @NSManaged public var colorFilter: String
