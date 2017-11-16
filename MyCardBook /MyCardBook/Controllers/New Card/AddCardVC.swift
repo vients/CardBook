@@ -87,7 +87,7 @@ class AddCardVC: UIViewController {
     }
     
     @IBAction func addColorFilter(_ sender: UIButton) {
-        colorTag = nil
+//        colorTag = nil
         
         for button in colorFilterCollection {
             if button.tag == sender.tag && button.on == true {
@@ -153,7 +153,7 @@ class AddCardVC: UIViewController {
         }
     }
     
-    private func editCardFunc() {
+     func editCardFunc() {
         if let card = card {
             isExpanded = true
             generateBarcode.isHidden = false

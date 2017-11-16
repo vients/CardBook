@@ -177,7 +177,7 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
                 detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage,cards[row!].barcodeImage ]
             }
             
-        } else if segue.identifier == Constant.segue.detailVCSegue {
+        } else if segue.identifier == Constant.segue.editCardSegue {
             let viewController = segue.destination as! AddCardVC
             viewController.logo = "edit"
             viewController.card = sender as? Card

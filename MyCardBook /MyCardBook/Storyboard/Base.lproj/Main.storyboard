@@ -164,7 +164,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="TKJ-xa-wVz">
-                        <barButtonItem key="leftBarButtonItem" image="order (4)" id="ydl-xv-fgR">
+                        <barButtonItem key="leftBarButtonItem" image="order but" id="ydl-xv-fgR">
                             <connections>
                                 <segue destination="VAL-6B-Isp" kind="popoverPresentation" identifier="popoverSegue" popoverAnchorBarButtonItem="ydl-xv-fgR" id="cPr-uR-LKQ">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -966,9 +966,9 @@
         <image name="front" width="680" height="440"/>
         <image name="info" width="64" height="64"/>
         <image name="open (2)" width="128" height="128"/>
-        <image name="order (4)" width="24" height="24"/>
+        <image name="order but" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sCc-Fy-c8w"/>
+        <segue reference="7WP-bq-wzx"/>
     </inferredMetricsTieBreakers>
 </document>
