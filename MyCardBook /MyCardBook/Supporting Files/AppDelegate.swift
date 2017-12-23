@@ -47,12 +47,85 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    /*
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        let handeledShortcutItem = self.handleShortCutItem(shortCutItem: shortcutItem)
+        completionHandler(handeledShortcutItem)
+    }
+
+    enum ShortcutIdentifier : String {
+
+        case TestViewController
+
+        init?(fullType : String) {
+            guard let last = fullType.components(separatedBy: ".").last else { return nil }
+            self.init(rawValue: last)
+        }
+
+        var type : String {
+            return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
+        }
+
+    }
+    func handleShortCutItem(shortCutItem: UIApplicationShortcutItem) -> Bool {
+
+        var handeled = false
+
+        guard ShortcutIdentifier(fullType: shortCutItem.type) != nil else { return false }
+        guard let shortcutType = shortCutItem.type as String? else { return false }
+
+        switch (shortcutType) {
+
+        case ShortcutIdentifier.TestViewController.type:
+
+            // Handle shortcut 1 (static).
+            handeled = true
+            // Navigation for Camera
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainVC = storyboard.instantiateViewController(withIdentifier: "Main") as! UINavigationController
+            let secVC : AddCardVC = storyboard.instantiateViewController(withIdentifier: "AddCardVC") as! AddCardVC
+            window?.rootViewController = mainVC
+            self.window?.makeKeyAndVisible()
+            mainVC.pushViewController(secVC, animated: true)
+            // Test to see if the button works
+            print("Second")
+
+            break
+
+//        case ShortcutIdentifier.ThirdVC.type:
+//            // Handle shortcut 1 (static).
+//            handeled = true
+//            // Navigation for Camera
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let mainVC = storyboard.instantiateViewController(withIdentifier: "Main") as! UINavigationController
+//            let secVC : ThirdVC = storyboard.instantiateViewController(withIdentifier: "Third") as! ThirdVC
+//            window?.rootViewController = mainVC
+//            self.window?.makeKeyAndVisible()
+//            mainVC.pushViewController(secVC, animated: true)
+//            // Test to see if the button works
+//            print("Third")
+//
+//            break
+
+        default:
+            break
+
+        }
+
+        return handeled
+
+    }
+    
+    */
+    
+    
+    
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-         if shortcutItem.type == "newCard" {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainVC = storyboard.instantiateViewController(withIdentifier: "Main") as! UINavigationController
-        let addVC : AddCardVC = storyboard.instantiateViewController(withIdentifier: "AddCardVC") as! AddCardVC
+        if shortcutItem.type == "AddCardVC" {
+           let storyboard = UIStoryboard(name: "Main", bundle: nil)
+           let mainVC = storyboard.instantiateViewController(withIdentifier: "Main") as! UINavigationController
+           let addVC : AddCardVC = storyboard.instantiateViewController(withIdentifier: "AddCardVC") as! AddCardVC
         window?.rootViewController = mainVC
         self.window?.makeKeyAndVisible()
         mainVC.pushViewController(addVC, animated: true)

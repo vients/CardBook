@@ -37,6 +37,7 @@
 		758F8AE01FA390CE00E04649 /* MyCardBookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F8ADF1FA390CE00E04649 /* MyCardBookTests.swift */; };
 		758F8AEB1FA390CE00E04649 /* MyCardBookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F8AEA1FA390CE00E04649 /* MyCardBookUITests.swift */; };
 		758F8AFD1FA39CAF00E04649 /* CardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F8AFC1FA39CAF00E04649 /* CardTableViewCell.swift */; };
+		75FDEBB21FEA906200810A34 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDEBB11FEA906200810A34 /* ScannerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		758F8AEC1FA390CE00E04649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		758F8AFC1FA39CAF00E04649 /* CardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableViewCell.swift; sourceTree = "<group>"; };
 		759387C51FBB47ED00E3F3DD /* CheckMarkHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckMarkHeader.h; sourceTree = "<group>"; };
+		75FDEBB11FEA906200810A34 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		CFF7703EF6220AB0BF9A11F6 /* Pods-MyCardBook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCardBook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyCardBook/Pods-MyCardBook.debug.xcconfig"; sourceTree = "<group>"; };
 		FA2FC6ADF2A8B5F284722413 /* Pods-MyCardBook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCardBook.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyCardBook/Pods-MyCardBook.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -187,6 +189,7 @@
 			children = (
 				75068A8C1FA7A302006E44F5 /* AddCardVC.swift */,
 				750E04C71FA8E8DD007CC45B /* ManagerCard.swift */,
+				75FDEBB11FEA906200810A34 /* ScannerViewController.swift */,
 			);
 			path = "New Card";
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				750C414A1FAF34540051FFB8 /* PopOverViewController.swift in Sources */,
 				7557FC2C1FA69126003B7634 /* LoginViewController.swift in Sources */,
 				751814B41FB8D04F003338EF /* WDImageCropViewController.swift in Sources */,
+				75FDEBB21FEA906200810A34 /* ScannerViewController.swift in Sources */,
 				750E04C81FA8E8DD007CC45B /* ManagerCard.swift in Sources */,
 				751814B31FB8D04F003338EF /* WDCropBorderView.swift in Sources */,
 				750D55E91FADCE70003EBB98 /* Orientation.swift in Sources */,

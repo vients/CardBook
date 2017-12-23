@@ -11,14 +11,6 @@ import CoreData
 import MessageUI
 
 class CardListViewController: UIViewController{
-//    struct Constant {
-//        struct cellIdentifier {
-//            static let cardListCell = "Cell"
-//        }
-//        struct segue {
-//            
-//        }
-//    }
     
     @IBOutlet private weak var cardTableView: UITableView!
     private var cards = [Card]()
@@ -257,12 +249,22 @@ extension CardListViewController:  UISearchResultsUpdating {
         }
     }
     
+//    private func filterContent(searchText: String) {
+//        searchResult = cards.filter({(cards: Card)-> Bool in
+//            let nameCard = cards.name.range(of: searchText, options: String.CompareOptions.caseInsensitive)
+//
+//            return nameCard != nil
+//        })
+//    }
     private func filterContent(searchText: String) {
+       
         searchResult = cards.filter({(cards: Card)-> Bool in
             let nameCard = cards.name.range(of: searchText, options: String.CompareOptions.caseInsensitive)
             
             return nameCard != nil
         })
+//        searchResult = choosenCard
+        cardTableView.reloadData()
     }
 }
 
