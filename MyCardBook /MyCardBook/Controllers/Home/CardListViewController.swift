@@ -163,10 +163,16 @@ extension CardListViewController: UITableViewDataSource, UITableViewDelegate {
             let row = indexpath?.row
             //    detailVC.cardsDetail = cards[row!]
             
-            if (cards[row!].barcode?.isEmpty)! {
-                detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage]
+            var cardArray: [Card] = []
+            if searchController.isActive {
+                 cardArray = searchResult
             } else {
-                detailVC.imageCardsArray = [cards[row!].frontImage,cards[row!].backImage,cards[row!].barcodeImage ]
+                cardArray = cards
+            }
+            if (cardArray[row!].barcode?.isEmpty)! {
+                detailVC.imageCardsArray = [cardArray[row!].frontImage,cardArray[row!].backImage]
+            } else {
+                detailVC.imageCardsArray = [cardArray[row!].frontImage,cardArray[row!].backImage,cardArray[row!].barcodeImage]
             }
             
         } else if segue.identifier == Constant.segue.editCardSegue {
@@ -249,23 +255,14 @@ extension CardListViewController:  UISearchResultsUpdating {
         }
     }
     
-//    private func filterContent(searchText: String) {
-//        searchResult = cards.filter({(cards: Card)-> Bool in
-//            let nameCard = cards.name.range(of: searchText, options: String.CompareOptions.caseInsensitive)
-//
-//            return nameCard != nil
-//        })
-//    }
     private func filterContent(searchText: String) {
-       
         searchResult = cards.filter({(cards: Card)-> Bool in
             let nameCard = cards.name.range(of: searchText, options: String.CompareOptions.caseInsensitive)
-            
+
             return nameCard != nil
         })
-//        searchResult = choosenCard
-        cardTableView.reloadData()
     }
+    
 }
 
 // MARK: Share to Mail
