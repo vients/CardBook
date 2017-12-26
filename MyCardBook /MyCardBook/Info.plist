@@ -49,7 +49,7 @@
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeAdd</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>AddCardVC</string>
+			<string>Add new Card</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>AddCardVC</string>
 		</dict>
