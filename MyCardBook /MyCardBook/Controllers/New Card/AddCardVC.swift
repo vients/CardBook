@@ -80,6 +80,7 @@ class AddCardVC: UIViewController, ScannerBarcodeDelegate {
     @IBAction func createBarCode(_ sender: Any) {
        self.performSegue(withIdentifier: "ScanSegue", sender: nil)
         isExpanded = true
+         generateBarcode.isHidden = false
     }
     
     func scannerBarcode(barcodeText: String) {
@@ -175,11 +176,7 @@ class AddCardVC: UIViewController, ScannerBarcodeDelegate {
             let index = Int(card.colorFilter)!
             colorFilterCollection[index].setOn(true, animated: true)
         }
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//                if card == nil {
-//                    let storeDescription = NSEntityDescription.entity(forEntityName: "Card", in: context)
-//                    card = Card(entity: storeDescription!, insertInto: context)
-//                }
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -317,102 +314,6 @@ extension AddCardVC : UIImagePickerControllerDelegate, WDImagePickerDelegate, UI
     }
 }
 
-//MARK: Scan barcode
-//extension AddCardVC: AVCaptureMetadataOutputObjectsDelegate {
-//
-//    func scanBarCodeUseCamera()  {
-//        captureDevice = AVCaptureDevice.default(for: .video)
-//
-//        if let captureDevice = captureDevice {
-//            do {
-//                let input = try AVCaptureDeviceInput(device: captureDevice)
-//
-//                captureSession = AVCaptureSession()
-//                guard let captureSession = captureSession else { return }
-//                captureSession.addInput(input)
-//
-//                let captureMetadataOutput = AVCaptureMetadataOutput()
-//                captureSession.addOutput(captureMetadataOutput)
-//
-//                captureMetadataOutput.setMetadataObjectsDelegate(self, queue: .main)
-//                captureMetadataOutput.metadataObjectTypes = [.code128, .ean13,  .ean8, .code39] //AVMetadataObject.ObjectType
-//
-//                captureSession.startRunning()
-//
-//                videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-//                videoPreviewLayer?.videoGravity = .resizeAspectFill
-//                videoPreviewLayer?.frame = view.layer.bounds
-//                view.layer.addSublayer(videoPreviewLayer!)
-//
-//                addButtonOnSuperView()
-//                addLabelOnSuperView()
-//
-//            } catch {
-//                print("Error Device Input")
-//            }
-//        }
-//    }
-//     func addButtonOnSuperView(){
-//        buttonOnSubView.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
-//        buttonOnSubView.center = CGPoint(x: view.bounds.midX, y: view.bounds.maxY - 60)
-//        buttonOnSubView.backgroundColor = .clear
-//        buttonOnSubView.tintColor = .white
-//        buttonOnSubView.layer.cornerRadius = 5
-//        buttonOnSubView.layer.borderWidth = 2
-//        buttonOnSubView.layer.borderColor = UIColor.white.cgColor
-//        buttonOnSubView.setTitle("ENTER MANUALLY", for: .normal)
-//        buttonOnSubView.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-//
-//        self.view.addSubview(buttonOnSubView)
-//    }
-//    func addLabelOnSuperView() {
-//
-//        codedLabel.frame = CGRect(x: 0, y: 0, width: 250, height: 200)
-//        codedLabel.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY - 150 )
-//        codedLabel.text = "Scan your cards barcode"
-//        codedLabel.numberOfLines = 1
-//        codedLabel.textColor = UIColor.white
-//        codedLabel.font = UIFont.systemFont(ofSize: 19)
-//        codedLabel.backgroundColor = UIColor.clear
-//
-//        self.view.addSubview(codedLabel)
-//    }
-//
-//    @objc func buttonAction(sender: UIButton!) {
-//        print("Button tapped")
-//        generateBarcode.isHidden = false
-//        createBarcodeButton.isHidden = true
-//        buttonOnSubView.removeFromSuperview()
-//        codedLabel.removeFromSuperview()
-//        self.videoPreviewLayer?.removeFromSuperlayer()
-//        self.captureSession?.stopRunning()
-//
-//    }
-//    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-//        if metadataObjects.count == 0 {
-//            print("No Input Detected")
-//            return
-//        }
-//        let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-//
-//        guard let stringCodeValue = metadataObject.stringValue else { return }
-//
-//        let alert = UIAlertController(title: "Card barcode", message: stringCodeValue, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Retake", style: .default, handler: nil))
-//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (nil) in
-//            self.barcodeTextField.text = stringCodeValue
-//            self.barcodeImageView.image = self.manager.generateBarCodeFromString(barcode: stringCodeValue)
-//
-//            self.codedLabel.removeFromSuperview()
-//            self.buttonOnSubView.removeFromSuperview()
-//            self.videoPreviewLayer?.removeFromSuperlayer()
-//            self.captureSession?.stopRunning()
-//
-//        }))
-//        present(alert, animated: true, completion: nil)
-//    }
-//}
-
 //MARK: UITextView
 extension AddCardVC: UITextViewDelegate {
     
@@ -459,13 +360,7 @@ extension UIViewController {
     }
 }
 
-//extension AddCardVC: ScannerBarcodeDelegate {
-//    func scannerBarcode(barcodeText: String) {
-//        barcodeTextField.text = barcodeText
-//        print("NEW CHANGE \(barcodeText)")
-//        barcodeImageView.image = manager.generateBarCodeFromString(barcode: barcodeText)
-//    }
-//}
+
 
 
 
